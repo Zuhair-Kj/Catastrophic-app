@@ -1,8 +1,14 @@
-package com.example.core
+package com.example.catastrophic
 
-import com.example.core.api.BrowseService
+import androidx.room.Room
+import androidx.room.RoomDatabase
+import com.example.browsing.BrowseCatsRepository
+import com.example.browsing.BrowseService
+import com.example.browsing.CatsDao
+import com.example.core.utils.NetworkHelper
 import okhttp3.OkHttpClient
 import okhttp3.logging.HttpLoggingInterceptor
+import org.koin.android.ext.koin.androidContext
 import org.koin.core.qualifier.named
 import org.koin.dsl.module
 import retrofit2.Retrofit
@@ -11,6 +17,13 @@ import java.util.concurrent.TimeUnit
 
 const val BASE_URL = "https://api.thecatapi.com/"
 const val SCOPE_BROWSE = "browse"
+
+@JvmField
+val coreModule = module {
+    single {
+        NetworkHelper(androidContext())
+    }
+}
 @JvmField
 val networkModule = module {
     single<BrowseService> {
@@ -34,5 +47,23 @@ val networkModule = module {
 
     single {
          HttpLoggingInterceptor().also { it.level = HttpLoggingInterceptor.Level.BODY }
+    }
+}
+
+@JvmField
+val roomModule = module {
+    single {
+        Room.databaseBuilder(androidContext(), CatastrophicDataBase::class.java, DATABASE_NAME).build()
+    }
+
+    single {
+        get<CatastrophicDataBase>().catsDao()
+    }
+}
+
+@JvmField
+val browseModule = module {
+    single {
+        BrowseCatsRepository(get(), get())
     }
 }

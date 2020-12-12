@@ -7,6 +7,7 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.Observer
 import com.example.browsing.databinding.ActivityBrowseCatsBinding
 import com.example.core.utils.Resource
+import java.lang.StringBuilder
 
 class BrowseCatsActivity: AppCompatActivity() {
     private lateinit var binding: ActivityBrowseCatsBinding
