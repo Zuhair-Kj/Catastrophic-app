@@ -44,6 +44,7 @@ class BrowseCatsViewModel: ViewModel(), KoinComponent {
 
             val list = if (networkHelper.connectivityLiveData.value == true)
                 browseCatsRepository.fetchCatsFromApi(defaultParamsMap.plus("limit" to "20").plus("offset" to "${currentPage*20}"))
+                    ?.also { browseCatsRepository.save(it) }
                 else
                 browseCatsRepository.getAll()
             list?.let {

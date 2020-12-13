@@ -39,10 +39,6 @@ class MainActivity : AppCompatActivity() {
             }
         })
 
-        networkHelper.connectivityLiveData.observe(this, Observer {
-          it?.let {
               browseViewModel.fetchCats()
-          }
-        })
     }
 }
