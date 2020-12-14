@@ -15,7 +15,7 @@
             android:layout_height="match_parent"
             android:scaleType="centerCrop"
             binding:imageUrl="@{cat.url}"
-            binding:placeholder="@{@drawable/image_place_holder}"/>
+            binding:placeholder="@{@drawable/ic_cat_placeholder}"/>
 
     </androidx.cardview.widget.CardView>
 </layout>

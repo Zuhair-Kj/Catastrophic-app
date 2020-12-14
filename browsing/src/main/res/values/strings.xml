@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="request_failed">There was a problem connecting to our servers</string>
+    <string name="retry">Retry</string>
+    <string name="online">You are back online</string>
+    <string name="offline">You are offline</string>
+</resources>

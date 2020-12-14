@@ -28,8 +28,8 @@ object ImageViewBindingAdapter {
                 .thumbnail(0.05f)
                 .override(imageView.width, imageView.height)
                 .apply(RequestOptions.centerCropTransform())
-                .transition(DrawableTransitionOptions.withCrossFade(android.R.integer.config_mediumAnimTime))
                 .diskCacheStrategy(DiskCacheStrategy.RESOURCE)
+                .transition(DrawableTransitionOptions.withCrossFade(android.R.integer.config_mediumAnimTime))
                 .into(imageView)
         }
     }

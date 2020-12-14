@@ -20,7 +20,7 @@
         </activity>
 
         <meta-data
-            android:name="com.example.catastrophic.LimitCacheSizeGlideModule"
+            android:name="com.example.catastrophic.GlideModule"
             android:value="AppGlideModule" />
     </application>
 

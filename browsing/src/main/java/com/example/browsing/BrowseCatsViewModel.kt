@@ -15,25 +15,9 @@ class BrowseCatsViewModel: ViewModel(), KoinComponent {
     private val browseCatsRepository: BrowseCatsRepository by inject()
     private val networkHelper: NetworkHelper by inject()
 
-    val itemsFromApi = mutableListOf<Cat>()
-    val catsLiveData = MutableLiveData<Resource<List<Cat>>>()
+    private val itemsFromApi = mutableListOf<Cat>()
+    val catsLiveData = MutableLiveData<Resource<List<Cat>>>(Resource.loading())
     var currentPage = 1
-//    fun fetchCats() {
-//        val exceptionHandler = CoroutineExceptionHandler { _, exception ->
-//            exception.printStackTrace()
-//            catsLiveData.postValue(Resource.error(message = exception.message ?: ""))
-//        }
-//        viewModelScope.launch(Dispatchers.IO + exceptionHandler) {
-//            catsLiveData.postValue(Resource.loading())
-//
-//            val list = browseCatsRepository.fetchCatsFromApi(defaultParamsMap.plus("page" to currentPage.toString()))
-//            list?.let {
-//                browseCatsRepository.save(it)
-//                catsLiveData.postValue(Resource.success(it))
-//                return@launch
-//            }
-//        }
-//    }
 
     fun fetchCats() {
         val exceptionHandler = CoroutineExceptionHandler { _, exception ->
@@ -46,13 +30,20 @@ class BrowseCatsViewModel: ViewModel(), KoinComponent {
             val list = if (networkHelper.connectivityLiveData.value == true)
                 browseCatsRepository.fetchCatsFromApi(defaultParamsMap.plus("limit" to "20").plus("offset" to "${(currentPage - 1)*20}"))
                     ?.also { browseCatsRepository.save(it) }
-                else
-                browseCatsRepository.getAll()
-            list?.let {
-                itemsFromApi.addAll(it)
-                catsLiveData.postValue(Resource.success(itemsFromApi))
-                currentPage++
+                else if (itemsFromApi.isEmpty()) {
+                    browseCatsRepository.getAll()
+                } else {
+                emptyList()
             }
+            list?.let {
+                if (it.isNotEmpty()) {
+                    itemsFromApi.addAll(it)
+                    catsLiveData.postValue(Resource.success(itemsFromApi))
+                    currentPage++
+                    return@launch
+                }
+            }
+            catsLiveData.postValue(Resource.error())
         }
     }
 }

@@ -14,6 +14,11 @@ class CatsAdapter(private val items: MutableList<Cat> = mutableListOf()): Recycl
         notifyItemRangeInserted(itemCount - indexDiff, itemCount - 1)
     }
 
+    fun clear() {
+        items.clear()
+        notifyDataSetChanged()
+    }
+
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): CatViewHolder {
         val binding = ItemCatBinding.inflate(LayoutInflater.from(parent.context), parent, false)
         (binding.root.layoutParams as? GridLayoutManager.LayoutParams)?.let {
