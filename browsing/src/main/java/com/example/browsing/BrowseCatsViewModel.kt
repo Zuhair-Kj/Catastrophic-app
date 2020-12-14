@@ -15,6 +15,7 @@ class BrowseCatsViewModel: ViewModel(), KoinComponent {
     private val browseCatsRepository: BrowseCatsRepository by inject()
     private val networkHelper: NetworkHelper by inject()
 
+    val itemsFromApi = mutableListOf<Cat>()
     val catsLiveData = MutableLiveData<Resource<List<Cat>>>()
     var currentPage = 1
 //    fun fetchCats() {
@@ -43,12 +44,13 @@ class BrowseCatsViewModel: ViewModel(), KoinComponent {
             catsLiveData.postValue(Resource.loading())
 
             val list = if (networkHelper.connectivityLiveData.value == true)
-                browseCatsRepository.fetchCatsFromApi(defaultParamsMap.plus("limit" to "20").plus("offset" to "${currentPage*20}"))
+                browseCatsRepository.fetchCatsFromApi(defaultParamsMap.plus("limit" to "20").plus("offset" to "${(currentPage - 1)*20}"))
                     ?.also { browseCatsRepository.save(it) }
                 else
                 browseCatsRepository.getAll()
             list?.let {
-                catsLiveData.postValue(Resource.success(it))
+                itemsFromApi.addAll(it)
+                catsLiveData.postValue(Resource.success(itemsFromApi))
                 currentPage++
             }
         }

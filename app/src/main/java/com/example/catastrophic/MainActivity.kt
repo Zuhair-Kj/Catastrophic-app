@@ -18,7 +18,6 @@ class MainActivity : AppCompatActivity() {
     private lateinit var binding: ActivityMainBinding
 
     private val browseViewModel: BrowseCatsViewModel by viewModels()
-    private val networkHelper: NetworkHelper by inject()
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = ActivityMainBinding.inflate(layoutInflater)

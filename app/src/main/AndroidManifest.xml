@@ -11,13 +11,17 @@
         android:supportsRtl="true"
         android:name=".CatastrophicApp"
         android:theme="@style/AppTheme">
-        <activity android:name=".MainActivity">
+        <activity android:name="com.example.browsing.BrowseCatsActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+
+        <meta-data
+            android:name="com.example.catastrophic.LimitCacheSizeGlideModule"
+            android:value="AppGlideModule" />
     </application>
 
 </manifest>
