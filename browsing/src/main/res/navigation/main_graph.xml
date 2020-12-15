@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    xmlns:app="http://schemas.android.com/apk/res-auto" android:id="@+id/main_graph"
+    app:startDestination="@id/browsCatsFragment">
+    <fragment
+        android:id="@+id/browsCatsFragment"
+        android:name="com.example.browsing.BrowseCatsFragment"
+        tools:layout="@layout/fragment_browse_cats"
+        android:label="BrowsCatsFragment" >
+        <action
+            android:id="@+id/action_browsCatsFragment_to_detailsFragment"
+            app:destination="@id/detailsFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/detailsFragment"
+        android:name="com.example.browsing.DetailsFragment"
+        tools:layout="@layout/fragment_details"
+        android:label="DetailsFragment">
+        <argument android:name="imageUrl" app:argType="string" app:nullable="true" />
+        <argument android:name="transitionName" app:argType="string" app:nullable="true" />
+    </fragment>
+</navigation>
