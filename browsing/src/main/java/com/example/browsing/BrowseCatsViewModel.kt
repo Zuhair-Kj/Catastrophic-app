@@ -18,6 +18,7 @@ class BrowseCatsViewModel: ViewModel(), KoinComponent {
     private val itemsFromApi = mutableListOf<Cat>()
     val catsLiveData = MutableLiveData<Resource<List<Cat>>>(Resource.loading())
     var currentPage = 1
+    private val pageLimit = 20
 
     fun fetchCats() {
         val exceptionHandler = CoroutineExceptionHandler { _, exception ->
@@ -28,7 +29,7 @@ class BrowseCatsViewModel: ViewModel(), KoinComponent {
             catsLiveData.postValue(Resource.loading())
 
             val list = if (networkHelper.connectivityLiveData.value == true)
-                browseCatsRepository.fetchCatsFromApi(defaultParamsMap.plus("limit" to "20").plus("offset" to "${(currentPage - 1)*20}"))
+                browseCatsRepository.fetchCatsFromApi(defaultParamsMap.plus("limit" to "$pageLimit").plus("offset" to "${(currentPage - 1)*pageLimit}"))
                     ?.also { browseCatsRepository.save(it) }
                 else if (itemsFromApi.isEmpty()) {
                     browseCatsRepository.getCachedEntries()

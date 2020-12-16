@@ -4,7 +4,6 @@ import android.os.Bundle
 import android.view.*
 import android.view.ScaleGestureDetector.SimpleOnScaleGestureListener
 import android.widget.ImageView
-import android.widget.Toast
 import androidx.core.content.ContextCompat
 import androidx.core.view.ViewCompat
 import androidx.core.view.doOnPreDraw
@@ -155,11 +154,6 @@ class BrowseCatsFragment : Fragment(), KoinComponent {
                     && browseViewModel.catsLiveData.value?.status != Resource.Status.LOADING
                 ) {
                     browseViewModel.fetchCats()
-                    Toast.makeText(
-                        requireContext(),
-                        "$lastItemIndex",
-                        Toast.LENGTH_SHORT
-                    ).show()
                 }
             }
         })
@@ -167,7 +161,6 @@ class BrowseCatsFragment : Fragment(), KoinComponent {
 
     private val onCatSelectedListener = object : OnCatSelectedListener {
         override fun onCatSelected(cat: Cat, imageView: ImageView) {
-            Toast.makeText(requireContext(), cat.url, Toast.LENGTH_SHORT).show()
             val transitionName = ViewCompat.getTransitionName(imageView) ?: ""
             val extras = FragmentNavigatorExtras( imageView to transitionName)
             findNavController().navigate(BrowseCatsFragmentDirections.actionBrowsCatsFragmentToDetailsFragment(cat.url, transitionName), extras)
