@@ -45,13 +45,11 @@ class NetworkHelper(context: Context) {
         private val activeNetworks: MutableList<Network> = mutableListOf()
 
         override fun onLost(network: Network) {
-            super.onLost(network)
             activeNetworks.removeAll { activeNetwork -> activeNetwork == network }
             mutableLiveData.postValue(activeNetworks.isNotEmpty())
         }
 
         override fun onAvailable(network: Network) {
-            super.onAvailable(network)
             if (activeNetworks.none { activeNetwork -> activeNetwork == network }) {
                 activeNetworks.add(network)
             }
