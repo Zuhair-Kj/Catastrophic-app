@@ -1,12 +1,10 @@
 package com.example.browsing
 
 import android.os.Bundle
-import android.view.LayoutInflater
-import android.view.View
-import android.view.ViewGroup
+import android.view.*
+import android.view.ScaleGestureDetector.SimpleOnScaleGestureListener
 import android.widget.ImageView
 import android.widget.Toast
-import androidx.appcompat.widget.AppCompatImageView
 import androidx.core.content.ContextCompat
 import androidx.core.view.ViewCompat
 import androidx.core.view.doOnPreDraw
@@ -26,7 +24,7 @@ import org.koin.core.KoinComponent
 import org.koin.core.context.loadKoinModules
 import org.koin.core.context.unloadKoinModules
 import org.koin.dsl.module
-import android.util.Pair as UtilPair
+
 
 class BrowseCatsFragment : Fragment(), KoinComponent {
 
@@ -59,12 +57,23 @@ class BrowseCatsFragment : Fragment(), KoinComponent {
             }
     }
 
+    private val mScaleGestureDetector: ScaleGestureDetector by lazy { ScaleGestureDetector(requireContext(), ScaleListener()) }
+    private var mScaleFactor = 1.0f
+
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
         binding = FragmentBrowseCatsBinding.inflate(inflater, container, false)
+        binding.list.setOnTouchListener { _, event ->
+            if (event.pointerCount == 2) {
+                mScaleGestureDetector.onTouchEvent(event);
+                true
+            }
+
+             false
+        }
         return binding.root
     }
 
@@ -167,5 +176,18 @@ class BrowseCatsFragment : Fragment(), KoinComponent {
 
     interface OnCatSelectedListener {
         fun onCatSelected(cat: Cat, imageView: ImageView)
+    }
+
+    private inner class ScaleListener : SimpleOnScaleGestureListener() {
+        override fun onScale(scaleGestureDetector: ScaleGestureDetector): Boolean {
+            mScaleFactor *= scaleGestureDetector.scaleFactor
+            mScaleFactor = Math.max(
+                1.0f,
+                Math.min(mScaleFactor, 10.0f)
+            )
+            binding.root.scaleX = mScaleFactor
+            binding.root.scaleY = mScaleFactor
+            return true
+        }
     }
 }
