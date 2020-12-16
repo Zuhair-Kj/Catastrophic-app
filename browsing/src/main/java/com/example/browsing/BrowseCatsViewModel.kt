@@ -31,7 +31,7 @@ class BrowseCatsViewModel: ViewModel(), KoinComponent {
                 browseCatsRepository.fetchCatsFromApi(defaultParamsMap.plus("limit" to "20").plus("offset" to "${(currentPage - 1)*20}"))
                     ?.also { browseCatsRepository.save(it) }
                 else if (itemsFromApi.isEmpty()) {
-                    browseCatsRepository.getAll()
+                    browseCatsRepository.getCachedEntries()
                 } else {
                 emptyList()
             }

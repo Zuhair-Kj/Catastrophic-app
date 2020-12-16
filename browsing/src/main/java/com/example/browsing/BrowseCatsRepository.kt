@@ -13,15 +13,11 @@ class BrowseCatsRepository(
         catsDao.insertRows(entries)
     }
 
-    suspend fun hasCachedEntries(): Int {
-        return catsDao.getRowsCount()
-    }
-
-    suspend fun getCachedEntries(limit: Int, offset: Int): List<Cat>? {
-        return catsDao.getRowsWith(limit, offset)
-    }
-
-    suspend fun getAll(): List<Cat>? {
+    suspend fun getCachedEntries(): List<Cat>? {
         return catsDao.getAllRows()
     }
+
+//    suspend fun getCachedEntries(limit: Int, offset: Int): List<Cat>? {
+//        return catsDao.getRowsWith(limit, offset)
+//    }
 }
